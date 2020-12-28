@@ -1,0 +1,58 @@
+blueprint:
+  name: Aprinde lumina la miscare.
+  description: Aprinde lumina innainte de rasarit si dupa rasarit.
+  domain: automation
+  source_url: https
+  input:
+    motion_entity:
+      name: Senzor Miscare
+      selector:
+        entity:
+          domain: binary_sensor
+          device_class: motion
+    light_target:
+      name: Lumina de aprins
+      selector:
+        target:
+          entity:
+            domain: light
+    no_motion_wait:
+      name: Timp de asteptare
+      description: Cat timp las lumina aprinsa dupa ultima detectie de miscare ( in secunde )
+      default: 120
+      selector:
+        number:
+          min: 0
+          max: 3600
+          unit_of_measurement: seconds
+
+# If motion is detected within the delay,
+# we restart the script.
+mode: restart
+max_exceeded: silent
+
+trigger:
+  platform: state
+  entity_id: !input motion_entity
+  from: "off"
+  to: "on"
+
+condition:
+  - condition: or
+    conditions:
+      - condition: sun
+        before: sunrise
+      - condition: sun
+        after: sunset
+
+action:
+  - service: light.turn_on
+    target: !input light_target
+  - wait_for_trigger:
+      platform: state
+      entity_id: !input motion_entity
+      from: "on"
+      to: "off"
+  - delay: !input no_motion_wait
+  - service: light.turn_off
+    target: !input light_target
