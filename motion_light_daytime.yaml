@@ -37,15 +37,13 @@ trigger:
   from: "off"
   to: "on"
 
-condition:
+action:
   - condition: or
     conditions:
       - condition: sun
         before: sunrise
       - condition: sun
         after: sunset
-
-action:
   - service: light.turn_on
     target: !input light_target
   - wait_for_trigger:
