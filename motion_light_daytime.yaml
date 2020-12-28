@@ -18,7 +18,7 @@ blueprint:
             domain: light
     no_motion_wait:
       name: Timp de asteptare
-      description: Cat timp las lumina aprinsa dupa ultima detectie de miscare ( in secunde )
+      description: Cat timp ramane lumina aprinsa dupa ultima miscare detectata.
       default: 120
       selector:
         number:
