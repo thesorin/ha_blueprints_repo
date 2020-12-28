@@ -2,7 +2,7 @@ blueprint:
   name: Aprinde lumina la miscare.
   description: Aprinde lumina innainte de rasarit si dupa rasarit.
   domain: automation
-  source_url: https
+  source_url: https://github.com/thesorin/ha_blueprints_repo/blob/main/motion_light_daytime.yaml
   input:
     motion_entity:
       name: Senzor Miscare
