@@ -1,0 +1,26 @@
+blueprint:
+  name: "Termostat Camera: Seteaza Mod Operare Si Presetare"
+  description: Controleaza termostat camera
+  domain: automation
+  input:
+    termostat:
+      name: Termostat Calorifer
+      selector:
+        entity:
+          domain: climate
+mode: restart
+max_exceeded: silent
+trigger:
+  platform: state
+  entity_id: !input 'termostat'
+  from: unknown
+  for: "00:00:30"
+action:
+- service: climate.set_hvac_mode
+  entity_id: !input 'termostat'
+  data:
+      hvac_mode: "{% if is_state('input_boolean.caldura', 'off') %} heat {% else %} auto {% endif %}"
+- service: climate.set_preset_mode
+  entity_id: !input 'termostat'
+  data:
+      preset_mode: schedule
